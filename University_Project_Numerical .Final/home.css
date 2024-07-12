@@ -1,0 +1,111 @@
+/**
+ * 
+ * This CSS file contains styles for the home page of the project.
+ * It includes styles for the body, headings, buttons, and button containers.
+ */
+
+/**
+ * Styles for the body element.
+ */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0px;
+  padding: 0px;
+ /* background-image: url('background.jpg');
+  background-size: cover;*/
+  /* Adjust as needed */
+  #vanta-cs{
+    width: 100%;
+    height: 100vh;
+  }
+}
+
+/**
+ * Styles for the heading element (h1).
+ */
+h1 {
+  color: rgba(252, 252, 252, 0.877);
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  text-align: center;
+  margin: 10px;
+  margin-top: 4%;
+}
+
+/**
+ * Styles for the heading element (h2).
+ */
+h2 {
+  color: rgba(255, 255, 255, 0.877);
+  font-family: Arial, sans-serif;
+  font-size: 28px;
+  text-align: center;
+  margin: 10px;
+}
+
+/**
+ * CSS code for the button container.
+ * 
+ * The button container is a flex container that centers its child elements horizontally.
+ * It has a margin-bottom of 0 pixels.
+ */
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0px;
+}
+
+/**
+ * This CSS code defines the styles for a button column.
+ * The button column is a flex container that arranges its child elements in a column layout.
+ * The child elements are centered vertically and horizontally within the column.
+ */
+.button-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 22px;
+  align-content: space-between;
+  flex-wrap: wrap;
+}
+
+/**
+ * Styles for a button element.
+ */
+.button {
+  display: flex;
+  flex-direction: column;
+  width: 180px;
+  height: 70px;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.877);
+  text-align: center;
+  line-height: 72px;
+  margin: 5px;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 22px;
+  font-family: Arial, sans-serif;
+ /* background-image: url('button.jpg');
+  background-size: cover;*/
+  #vanta-cs{
+    width: fit-contents;
+    height: fit-content;
+  }
+
+}
+
+/**
+ * Styles for the hover state of a button.
+ */
+.button:hover {
+  text-decoration: underline;
+  text-decoration-color: rgb(255, 255, 255);
+}

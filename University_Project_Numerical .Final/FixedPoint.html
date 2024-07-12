@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fixed point Algorithm</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.0/math.js"></script>
+    <link rel="stylesheet" href="master.css">
+    <link rel="stylesheet" href="nav.css">
+</head>
+
+<body class="allpage">
+    <div id="vanta-cs">    <nav>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="Bisection.html">Bisection</a></li>
+            <li><a href="falsepostion.html">False Position</a></li>
+            <li><a href="newton.html">Newton-Raphson</a></li>
+            <li><a href="secant.html">Secant</a></li>
+            <li><a href="GuassElmi.html">Gauss Elimination</a></li>
+            <li><a href="GaussElminPP.html">Gauss Partial Pivoting</a></li>
+            <li><a href="GaussJor.html">Gauss Jordon Elimination</a></li>
+            <li><a href="LUDecu.html">LU Decomposition</a></li>
+            <li><a href="Cramer.html">Cramer</a></li>
+        </ul>
+    </nav>
+    <div>
+        <br>
+        <br>
+        <h1>
+            <p> Numerical Analysis Calculator </p>
+        </h1>
+        <h2>
+            <p> Useing fixed point Algorithm </p>
+        </h2>
+        <h2>
+            <p>Don't forget the parentheses and use ^ for power</p>
+        </h2>
+        <form action="" method="get">
+
+            <div class="all-div">
+                <label class="function-lable" for="function"> F(X):</label>
+                <input class="function-input" type="text" required id="function" maxlength="60" name="function"
+                    placeholder=" F(X) simplifyed " autofocus title="Plese fill out this field">
+            </div>
+
+            <br>
+
+            <div class="all-div">
+                <label class="function-lable" for="x0"> x<sub>0</sub>:</label>
+                <input class="function-input" type="text" required id="x0" name="x0" placeholder="x0">
+            </div>
+
+            <br>
+
+            <div class="all-div">
+                <label class="function-lable" for="tolerance"> Σa%:</label>
+                <input class="function-input" type="text" required id="tolerance" name="tolerance"
+                    placeholder="Enter Σa%">
+            </div>
+
+            <br>
+
+            <div class="all-div">
+                <input class="button" type="button" class="calculate-button" value="Calculate"
+                    onclick="calculatefixedpoint()">
+            </div>
+
+
+        </form>
+        <div class="line"></div>
+        <table class="table" id="fixedpointTable">
+            <thead>
+                <tr>
+                    <th><span class="A"> i </span></th>
+                    <th>X <sub>i</sub></th>
+                    <th>F(X <sub>i</sub>)</th>
+                    <th> &#8721; <span class="A"> a </span> %</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="line"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+    <script>
+        VANTA.WAVES({
+            el: "#vanta-cs",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x0,
+            shininess: 50.00,
+            waveHeight: 40.00,
+            waveSpeed: 1.35,
+            zoom: 0.65
+        })
+    </script>    
+
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.js"></script>
+    <!-- Import math.js library for mathematical operations -->
+
+    <script>
+        function Function(x, expression) {
+            try {
+                const scope = { x: x };
+                const compiledExpression = math.compile(expression);
+                return compiledExpression.evaluate(scope);
+            } catch (error) {
+                throw new Error("Invalid function expression.");
+            }
+        }
+
+        function fixedpoint(XI, tolerance) {
+            let XIP1 = XI;
+            let XIM1;
+            let iteration = 1;
+            let tableBody = document.getElementById("fixedpointTable").getElementsByTagName('tbody')[0];
+
+            tableBody.innerHTML = "";
+
+            do {
+                let formatter = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 3 });
+                let formatter2 = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+                XIM1 = XI
+                XI = XIP1;
+                XIP1 = Function(XI, document.getElementsByName("function")[0].value);
+
+
+                let row = tableBody.insertRow(-1);
+
+                let cell1 = row.insertCell(0);
+                cell1.textContent = iteration;
+
+                let cell2 = row.insertCell(1);
+                cell2.textContent = formatter.format(XI);
+
+                let cell3 = row.insertCell(2);
+                cell3.textContent = formatter.format(XIP1); // Fixed XIP1 value in the table
+
+                if (iteration === 1) {
+                    let cell4 = row.insertCell(3);
+                    cell4.textContent = "ـــــــ";
+                    errorPercentage = 100;
+                } else {
+                    errorPercentage = Math.abs((XI - XIM1) / XI) * 100;
+
+                    let cell4 = row.insertCell(3);
+                    cell4.textContent = formatter2.format(errorPercentage) + "%"
+                }
+
+                iteration++;
+
+            } while (errorPercentage > tolerance && iteration <= 100); // Added iteration limit for safety
+        }
+
+
+        function calculatefixedpoint() {
+            try {
+                let XI = parseFloat(document.getElementsByName("x0")[0].value);
+                let tolerance = parseFloat(document.getElementsByName("tolerance")[0].value);
+                fixedpoint(XI, tolerance);
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+    </script>
+</body>
+
+</html>
