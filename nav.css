@@ -1,0 +1,57 @@
+/* For nav.css */
+nav {
+    background-color: #000000;
+    color: #fffff0;
+    height: 3.4%;
+
+  
+    /* Background color of the navigation bar */
+    padding-left: 0%;
+    padding-right: 0%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /* Padding around the navigation bar */
+    width: 100%;
+    /* Occupy full width */
+    position: fixed;
+    /* Fixed position to stay at the top */
+    top: 0;
+    /* Stick to the top */
+    z-index: 1000;
+    /* Ensure it's above other content */
+    text-align: center;
+    /* Center the content */
+    background-image: url(background.jpg);
+    background-size: contain;
+  
+}
+
+ul {
+    list-style-type: none;
+    /* Remove default bullet points */
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    display: inline;
+    /* Display list items horizontally */
+    margin-right: 20px;
+    /* Spacing between list items */
+    text-align: center;
+    /* Center the text */
+}
+
+a {
+    color: #ffffff;
+    /* Text color of links */
+    text-decoration: none;
+    /* Remove underline from links */
+}
+
+a:hover {
+    text-decoration: rgb(71, 71, 71);
+    /* Underline links on hover */
+    text-decoration: underline;
+
+}

@@ -1,0 +1,203 @@
+<!--
+    This HTML file contains a Cramer's Rules Solver. It allows users to input a 3x3 matrix and solve the system of linear equations using Cramer's method.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cramer's Rules Solver</title>
+    <link rel="stylesheet" href="algebra.css">
+    <link rel="stylesheet" href="nav.css">
+</head>
+
+<body>
+    <!-- Navigation bar -->
+    <div id="vanta-cs">
+        <nav>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="Bisection.html">Bisection</a></li>
+                <li><a href="falsepostion.html">False Position</a></li>
+                <li><a href="FixedPoint.html">FixedPoint</a></li>
+                <li><a href="newton.html">Newton-Raphson</a></li>
+                <li><a href="secant.html">Secant</a></li>
+                <li><a href="GuassElmi.html">Gauss Elimination</a></li>
+                <li><a href="GaussElminPP.html">Gauss Partial Pivoting</a></li>
+                <li><a href="GaussJor.html">Gauss Jordon Elimination</a></li>
+                <li><a href="LUDecu.html">LU Decomposition</a></li>
+            </ul>
+        </nav>
+    
+        <div class="container">
+            <br>
+            <h1>Cramer's Method</h1>
+            <div>
+                <!-- Input matrix -->
+                <table id="matrixInput">
+                    <!-- Rows will be added dynamically with JavaScript -->
+                    <tr>
+                        <td><input type="number" class="matrixInput" size="10"></td>
+                        <td><input type="number" class="matrixInput" size="10"></td>
+                        <td><input type="number" class="matrixInput" size="10"></td>
+                        <td><input type="number" class="matrixInput" size="10"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="number" class="matrixInput" size="10"></td>
+                        <td><input type="number" class="matrixInput" size="10"></td>
+                        <td><input type="number" class="matrixInput" size="10"></td>
+                        <td><input type="number" class="matrixInput" size="10"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="number" class="matrixInput" size="10"></td>
+                        <td><input type="number" class="matrixInput" size="10"></td>
+                        <td><input type="number" class="matrixInput" size="10"></td>
+                        <td><input type="number" class="matrixInput" size="10"></td>
+                    </tr>
+                </table>
+            </div>
+    
+            <!-- Solve button -->
+            <button onclick="solveSystem()">Solve System</button>
+    
+            <!-- Result display -->
+            <p id="result"></p>
+            
+            <!-- Steps display -->
+            <textarea id="steps" readonly></textarea>
+        </div>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+        <script>
+            VANTA.WAVES({
+                el: "#vanta-cs",
+                mouseControls: true,
+                touchControls: true,
+                gyroControls: false,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: 0x0,
+                shininess: 50.00,
+                waveHeight: 40.00,
+                waveSpeed: 1.35,
+                zoom: 0.65
+            })
+        </script>    
+    </div>
+    <script>
+        // Function to solve the system of linear equations using Cramer's method
+        function solveSystem() {
+            // Retrieve matrix data from input fields
+            var matrix = [];
+            var rows = document.getElementsByClassName("matrixInput");
+            for (var i = 0; i < rows.length; i += 4) {
+                var row = [];
+                for (var j = i; j < i + 4; j++) {
+                    row.push(parseInt(rows[j].value));
+                }
+                matrix.push(row);
+            }
+
+            // Calculate determinants and solutions
+            var D = det(matrix);
+            var D1 = det(replaceColumn(matrix, getColumn(matrix, 3), 0));
+            var D2 = det(replaceColumn(matrix, getColumn(matrix, 3), 1));
+            var D3 = det(replaceColumn(matrix, getColumn(matrix, 3), 2));
+
+            // Format matrices for display
+            var matrixText = "";
+            for (var i = 0; i < matrix.length; i++) {
+                matrixText += "[" + matrix[i].join(" ") + "]";
+                if (i < matrix.length - 1) {
+                    matrixText += "\n ";
+                }
+            }
+            matrixText += "";
+
+            var matrixTextD1 = "";
+            for (var i = 0; i < matrix.length; i++) {
+                var tempRow = matrix[i].slice(); // Create a copy of the row
+                tempRow[0] = matrix[i][3]; // Replace first column with last column values
+                matrixTextD1 += "[" + tempRow.join(" ") + "]";
+                if (i < matrix.length - 1) {
+                    matrixTextD1 += "\n ";
+                }
+            }
+            matrixTextD1 += "";
+
+            var matrixTextD2 = "";
+            for (var i = 0; i < matrix.length; i++) {
+                var tempRow = matrix[i].slice(); // Create a copy of the row
+                tempRow[1] = matrix[i][3]; // Replace second column with last column values
+                matrixTextD2 += "[" + tempRow.join(" ") + "]";
+                if (i < matrix.length - 1) {
+                    matrixTextD2 += "\n ";
+                }
+            }
+            matrixTextD2 += "";
+
+            var matrixTextD3 = "";
+            for (var i = 0; i < matrix.length; i++) {
+                var tempRow = matrix[i].slice(); // Create a copy of the row
+                tempRow[2] = matrix[i][3]; // Replace third column with last column values
+                matrixTextD3 += "[" + tempRow.join(" ") + "]";
+                if (i < matrix.length - 1) {
+                    matrixTextD3 += "\n ";
+                }
+            }
+            matrixTextD3 += "";
+
+            // Format the results
+            var resultText = "det(D): " + D + "\n" +
+                "Matrix D:\n" + matrixText + "\n\n" +
+                "det(D1): " + D1 + "\n" +
+                "Matrix D1:\n" + matrixTextD1 + "\n\n" +
+                "det(D2): " + D2 + "\n" +
+                "Matrix D2:\n" + matrixTextD2 + "\n\n" +
+                "det(D3): " + D3 + "\n" +
+                "Matrix D3:\n" + matrixTextD3;
+
+            // Display results
+            document.getElementById("steps").value = resultText;
+            
+            document.getElementById('result').innerText = "After Solving The System ,(X,Y,Z): (" + D1/D + ", " + D2/D + ", " + D3/D + ")";
+        }
+
+        // Function to calculate determinant of a matrix
+        function det(matrix) {
+            return matrix[0][0] * matrix[1][1] * matrix[2][2] +
+                matrix[0][1] * matrix[1][2] * matrix[2][0] +
+                matrix[0][2] * matrix[1][0] * matrix[2][1] -
+                matrix[0][2] * matrix[1][1] * matrix[2][0] -
+                matrix[0][1] * matrix[1][0] * matrix[2][2] -
+                matrix[0][0] * matrix[1][2] * matrix[2][1];
+        }
+
+        // Function to get a column from a matrix
+        function getColumn(matrix, col) {
+            var column = [];
+            for (var i = 0; i < matrix.length; i++) {
+                column.push(matrix[i][col]);
+            }
+            return column;
+        }
+
+        // Function to replace a column in a matrix
+        function replaceColumn(matrix, newColumn, col) {
+            var newMatrix = matrix.map(function (arr) {
+                return arr.slice();
+            });
+            for (var i = 0; i < newMatrix.length; i++) {
+                newMatrix[i][col] = newColumn[i];
+            }
+            return newMatrix;
+        }
+    </script>
+</body>
+
+</html>

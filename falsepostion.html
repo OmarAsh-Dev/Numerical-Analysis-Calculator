@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>false potion Algorithm</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.0/math.js"></script>
+    <link rel="stylesheet" href="master.css">
+    <link rel="stylesheet" href="nav.css">
+</head>
+
+<body class="allpage">
+    <div id="vanta-cs">
+        <nav>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="Bisection.html">Bisection</a></li>
+                <li><a href="FixedPoint.html">FixedPoint</a></li>
+                <li><a href="newton.html">Newton-Raphson</a></li>
+                <li><a href="secant.html">Secant</a></li>
+                <li><a href="GuassElmi.html">Gauss Elimination</a></li>
+                <li><a href="GuassElmi.html">Gauss Elimination</a></li>
+                <li><a href="GaussElminPP.html">Gauss Partial Pivoting</a></li>
+                <li><a href="GaussJor.html">Gauss Jordon Elimination</a></li>
+                <li><a href="LUDecu.html">LU Decomposition</a></li>
+                <li><a href="Cramer.html">Cramer</a></li>
+            </ul>
+        </nav>
+        <div>
+            <br>
+            <br>
+            <h1>
+                <p> Numerical Analysis Calculator </p>
+            </h1>
+            <h2>
+                <p> Useing false potion Algorithm </p>
+            </h2>
+            <h2>
+                <p>Don't forget the parentheses and use ^ for power</p>
+            </h2>
+            <form action="" method="get">
+                <div class="all-div">
+                    <label class="function-lable" for="function"> F(X):</label>
+                    <input class="function-input" type="text" required id="function" maxlength="60" name="function"
+                        placeholder=" F(X) " autofocus title="Plese fill out this field">
+                </div>
+                <br>
+                <div class="all-div">
+                    <label class="function-lable" for="Xlower"> X<sub>L</sub>:</label>
+                    <input class="function-input" type="text" required id="Xlower" name="Xlower" placeholder="Enter Xlower">
+                </div>
+                <br>
+                <div class="all-div">
+                    <label class="function-lable" for="Xupper"> X<sub>U</sub>:</label>
+                    <input class="function-input" type="text" required id="Xupper" name="Xupper" placeholder="Enter Xupper">
+                </div>
+                <br>
+                <div class="all-div">
+                    <label class="function-lable" for="tolerance"> Σa%:</label>
+                    <input class="function-input" type="text" required id="tolerance" name="tolerance"
+                        placeholder="Enter Σa%">
+                </div>
+                <br>
+                <div class="all-div">
+                    <input class="button" type="button" class="calculate-button" value="Calculate"
+                        onclick="calculateBisection()">
+                </div>
+            </form>
+            <div class="line"></div>
+            <table class="table" id="bisectionTable">
+                <thead>
+                    <tr>
+                        <th><span class="A"> i </span></th>
+                        <th>X <sub>L</sub></th>
+                        <th>F(X <sub>L</sub>)</th>
+                        <th>X <sub>U</sub></th>
+                        <th>F(X <sub>U</sub>)</th>
+                        <th>X <sub>r</sub></th>
+                        <th>F(X <sub>r</sub>)</th>
+                        <th> &#8721; <span class="A"> a </span> %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="line"></div>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+        <script>
+            VANTA.WAVES({
+                el: "#vanta-cs",
+                mouseControls: true,
+                touchControls: true,
+                gyroControls: false,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: 0x0,
+                shininess: 50.00,
+                waveHeight: 40.00,
+                waveSpeed: 1.35,
+                zoom: 0.65
+            })
+        </script>    
+    
+    </div>
+    <script>
+        function Function(x, expression) {
+            try {
+                const scope = { x: x };
+                const compiledExpression = math.compile(expression);
+                return compiledExpression.evaluate(scope);
+            } catch (error) {
+                throw new Error("Invalid function expression.");
+            }
+        }
+
+        function Bisection(xl, xu, tolerance) {
+            let xr;
+            let xrold;
+            let errorPercentage;
+            let iteration = 1;
+            let tableBody = document.getElementById("bisectionTable").getElementsByTagName('tbody')[0];
+
+            tableBody.innerHTML = ""; // Clear existing table content
+
+            do {
+                let formatter = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 3 });
+                let formatter2 = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+                xrold = xr;
+                // xr = xu - (Function(xu, document.getElementsByName("function")[0].value)) * (xl - xu) / 
+                // (Function(xl, document.getElementsByName("function")[0].value)) - (Function(xu, document.getElementsByName("function")[0].value)); wrong calculation
+
+                xr = xu - (Function(xu, document.getElementsByName("function")[0].value) * (xl - xu) / (Function(xl, document.getElementsByName("function")[0].value) - Function(xu, document.getElementsByName("function")[0].value)));
+
+
+                let row = tableBody.insertRow(-1);
+
+                let cell1 = row.insertCell(0);
+                cell1.textContent = iteration;
+
+                let cell2 = row.insertCell(1);
+                cell2.textContent = formatter.format(xl);
+
+                let cell3 = row.insertCell(2);
+                cell3.textContent = formatter.format(Function(xl, document.getElementsByName("function")[0].value));
+
+                let cell4 = row.insertCell(3);
+                cell4.textContent = formatter.format(xu);
+
+                let cell5 = row.insertCell(4);
+                cell5.textContent = formatter.format(Function(xu, document.getElementsByName("function")[0].value));
+
+                let cell6 = row.insertCell(5);
+                cell6.textContent = formatter.format(xr);
+
+                let cell7 = row.insertCell(6);
+                cell7.textContent = formatter.format(Function(xr, document.getElementsByName("function")[0].value));
+                if (iteration === 1) {
+                    let cell8 = row.insertCell(7);
+                    cell8.textContent = "ـــــــ"
+                    errorPercentage = 100;
+                } else {
+                    errorPercentage = Math.abs((xr - xrold) / xr) * 100;
+
+                    let cell8 = row.insertCell(7);
+                    cell8.textContent = formatter2.format(errorPercentage) + "%"
+                }
+
+                iteration++;
+
+                if (Function(xr, document.getElementsByName("function")[0].value) * Function(xl, document.getElementsByName("function")[0].value) < 0) {
+                    xu = xr;
+                } else {
+                    xl = xr;
+                }
+
+            } while (errorPercentage > tolerance && iteration <= 10); // Added iteration limit for safety
+        }
+
+
+        function calculateBisection() {
+            try {
+                let Xlower = parseFloat(document.getElementsByName("Xlower")[0].value);
+                let Xupper = parseFloat(document.getElementsByName("Xupper")[0].value);
+                let tolerance = parseFloat(document.getElementsByName("tolerance")[0].value);
+
+                if (Function(Xlower, document.getElementsByName("function")[0].value) * Function(Xupper, document.getElementsByName("function")[0].value) > 0) {
+                    alert("Invalid range. Choose a different range where f(Xlower) * f(Xupper) < 0.");
+                } else {
+                    Bisection(Xlower, Xupper, tolerance);
+                }
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+    </script>
+</body>
+
+</html>

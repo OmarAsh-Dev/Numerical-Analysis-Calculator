@@ -1,0 +1,66 @@
+<!--
+    This HTML file represents the home page of a Numerical Analysis Calculator.
+    It contains a title, a stylesheet link, and a set of buttons for different numerical methods.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numerical Analysis Calculator</title>
+
+    <link rel="stylesheet" href="home.css">
+</head>
+
+<body id="vanta-cs">
+        <h1>Numerical Analysis Calculator</h1> <!-- Title of the page -->
+        <h2>Choose a method:</h2> <!-- Subtitle -->
+
+        <div class="button-container">
+            <!-- Container for the buttons -->
+            <div class="button-column">
+                <a href="Bisection.html" class="button">Bisection</a> <!-- Button for the Bisection Method -->
+                <a href="falsepostion.html" class="button">False Position</a>
+                <!-- Button for the False Position Method -->
+                <a href="FixedPoint.html" class="button">FixedPoint</a> <!-- Button for the Fixed Point Method -->
+                <a href="newton.html" class="button">Newton-Raphson</a> <!-- Button for the Newton-Raphson Method -->
+                <a href="secant.html" class="button">Secant</a> <!-- Button for the Secant Method -->
+            </div>
+            <div class="button-column">
+                <a href="GuassElmi.html" class="button">Guass</a>
+                <!-- Button for the Gauss Elimination Method -->
+                <a href="GaussElminPP.html" class="button">Gauss with PP</a>
+                <!-- Button for the Gauss Elimination with Partial Pivoting Method -->
+                <a href="GaussJor.html" class="button">Gauss Jordon </a>
+                <!-- Button for the Gauss Jordon Elimination Method -->
+                <a href="LUDecu.html" class="button">LU Decompostion</a> <!-- Button for the LU Decomposition Method -->
+                <a href="Cramer.html" class="button">Cramer Method</a> <!-- Button for the Cramer Method -->
+            </div>
+        </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+    <script>
+        VANTA.WAVES({
+            el: "#vanta-cs",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x0,
+            shininess: 50.00,
+            waveHeight: 40.00,
+            waveSpeed: 1.25,
+            zoom: 1
+        })
+    </script>
+
+
+</body>
+
+</html>
